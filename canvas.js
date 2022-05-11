@@ -64,7 +64,7 @@ function createCanvas (size) {
     for (let y = 0; y < size; y++) {
         const row = [];
         
-        for (let x = 0; y < size; x++) {
+        for (let x = 0; x < size; x++) {
             const element = document.createElement("div");
             const text = document.createTextNode(" ");
             
