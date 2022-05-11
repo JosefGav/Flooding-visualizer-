@@ -1,0 +1,18 @@
+:root {
+    --w: 0;
+    --h: 0;
+}
+
+#grid {
+    display:grid;
+    grid-template-columns: repeat(var(--w),1fr);
+    grid-template-rows: repeat(var(--h),1fr);
+}
+
+.hidden {
+    border: 1px black solid;
+    background-color: aquamarine;
+}
+
+
+
