@@ -1,30 +1,30 @@
 let root = document.querySelector(':root');
 
-let canvasSize = 10;
+let canvasSize = 15;
 //let canvasDimension;
 
 let color = 'blue';
 
 const tileStatuses = {
     revealed: "revealed",
-    hidden: "hidden",
+    hidden: "hidden",   
+    wall: "wall",
+}
+
+const selectors = {
+    eraser: "eraser",
+    fill: "fill",
+    placeWall: "wall",
 }
 
 class Tile {
     constructor(x,y,color,element) {
         this._x = x;
         this._y = y;
-        this._color = color;
         this._element = element; 
-        this._revealed = false; 
+        this._tileStatus = "hidden"; 
     }
 
-    set color(newCol){
-        this._color = newCol;
-    }
-    get color(){
-        return this._color;
-    }
     
     set x(x){
         this._x = x;
@@ -40,12 +40,25 @@ class Tile {
         return this._y;
     }
 
-    set isRevealed(revealed){
-        this._revealed = isRevealed;
+    set tileStatus(status){
+        this._element.className = status;
+        this._tileStatus = status;
     }
-    get isRevealedy(){
-        return this._revealed;
+    get tileStatus(){
+        return this._tileStatus;
     }   
+
+    set element(a){
+        this._element = this._element;
+    }
+
+    get element() {
+        return this._element;
+    }
+
+    expandElement() {
+        this._element.style.animation = "border 1s ease-in"
+    }
 } 
 
 
@@ -73,15 +86,25 @@ function createCanvas (size) {
             element.classList.add(tileStatuses.hidden);
 
             const tile = new Tile(x,y,'white',element)
+
+            tile.element.addEventListener("click", () => {
                 
+                    floodFill(tile.x,tile.y)
+            
+            }) 
+            tile.element.addEventListener("contextmenu", e => {
+                e.preventDefault();
+
+                tile.tileStatus = "wall"; 
+            })
+
             row.push(tile);
 
             document.getElementById("grid").appendChild(element)
-
-            
         }
         canvas.push(row);
     }
+    return canvas; 
 }
-createCanvas(4)
+canvas = createCanvas(canvasSize)
 
