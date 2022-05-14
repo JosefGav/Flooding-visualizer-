@@ -1,6 +1,20 @@
 let root = document.querySelector(':root');
 
-let canvasSize = 15;
+var gcd = function(a, b) {
+    if (!b) {
+      return a;
+    }
+  
+    return gcd(b, a % b);
+  }
+
+let canvasSize = 30;
+let canvasW = window.innerWidth;
+let canvasH = window.innerHeight;
+
+let tileSize = 20;
+canvasW = Math.floor(canvasW / tileSize);
+canvasH = Math.floor(canvasH / tileSize); 
 //let canvasDimension;
 
 let color = 'blue';
@@ -62,7 +76,7 @@ class Tile {
 } 
 
 
-function createCanvas (size) {
+function createCanvas (w,h) {
     const grid = document.createElement("div")
     grid.setAttribute("id","grid");
     const gridFillerText = document.createTextNode(" ");
@@ -70,14 +84,14 @@ function createCanvas (size) {
     grid.appendChild(gridFillerText);
     document.body.appendChild(grid);
 
-    root.style.setProperty('--w', size);
-    root.style.setProperty('--h', size);
+    root.style.setProperty('--w', w);
+    root.style.setProperty('--h', h);
 
     const canvas = [];
-    for (let y = 0; y < size; y++) {
+    for (let y = 0; y < h; y++) {
         const row = [];
         
-        for (let x = 0; x < size; x++) {
+        for (let x = 0; x < w; x++) {
             const element = document.createElement("div");
             const text = document.createTextNode(" ");
             
@@ -88,14 +102,13 @@ function createCanvas (size) {
             const tile = new Tile(x,y,'white',element)
 
             tile.element.addEventListener("click", () => {
-                
-                    floodFill(tile.x,tile.y)
+                tile.tileStatus = "wall"; 
             
             }) 
             tile.element.addEventListener("contextmenu", e => {
                 e.preventDefault();
 
-                tile.tileStatus = "wall"; 
+                floodFill(tile.x,tile.y);
             })
 
             row.push(tile);
@@ -106,5 +119,5 @@ function createCanvas (size) {
     }
     return canvas; 
 }
-canvas = createCanvas(canvasSize)
+canvas = createCanvas(canvasW,canvasH)
 

@@ -4,7 +4,7 @@ function sleep(ms) {
 //await sleep()
 
 async function floodFill(x,y) {
-    if (x >= canvasSize || y >= canvasSize || x < 0 || y < 0) return;
+    if (x >= canvasW || y >= canvasH || x < 0 || y < 0) return;
 
     if (canvas[y][x].tileStatus ===  "revealed" || canvas[y][x].tileStatus ===  "wall") return;
 
