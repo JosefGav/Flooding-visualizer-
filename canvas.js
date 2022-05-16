@@ -12,7 +12,7 @@ let canvasSize = 30;
 let canvasW = window.innerWidth;
 let canvasH = window.innerHeight;
 
-let tileSize = 20;
+let tileSize = 40;
 canvasW = Math.floor(canvasW / tileSize);
 canvasH = Math.floor(canvasH / tileSize); 
 //let canvasDimension;
