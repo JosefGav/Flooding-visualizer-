@@ -1,20 +1,15 @@
 let root = document.querySelector(':root');
 
-var gcd = function(a, b) {
-    if (!b) {
-      return a;
-    }
-  
-    return gcd(b, a % b);
-  }
-
-let canvasSize = 30;
 let canvasW = window.innerWidth;
 let canvasH = window.innerHeight;
 
 let tileSize = 40;
 canvasW = Math.floor(canvasW / tileSize);
 canvasH = Math.floor(canvasH / tileSize); 
+
+let visitedTilesInOrder = [];
+let animationPaused = false; 
+let startingTile;
 //let canvasDimension;
 
 let color = 'blue';
@@ -23,13 +18,9 @@ const tileStatuses = {
     revealed: "revealed",
     hidden: "hidden",   
     wall: "wall",
+    visited: "visited",
 }
 
-const selectors = {
-    eraser: "eraser",
-    fill: "fill",
-    placeWall: "wall",
-}
 
 class Tile {
     constructor(x,y,color,element) {
@@ -102,13 +93,34 @@ function createCanvas (w,h) {
             const tile = new Tile(x,y,'white',element)
 
             tile.element.addEventListener("click", () => {
-                tile.tileStatus = "wall"; 
-            
+                if (tile.tileStatus != tileStatuses.revealed) tile.tileStatus = tileStatuses.wall; 
+
+                // if (tile.tileStatus === tileStatuses.visited &&
+                //     tile.tileStatus != tileStatuses.revealed
+                //     ) {
+                    
+                //     animationPaused = true;
+                //     visitedTilesInOrder = []
+                //     tile.tileStatus = tileStatuses.wall;
+                //     //filter the visited tiles in order list and remove everything past the currenttile 
+                
+
+                //     for (let r = 0; r < canvas.length; r++) {
+                //         for (let c = 0; c < canvas[r].length; c++) {
+                //             if (canvas[r][c].tileStatus === tileStatuses.visited && canvas[r][c].tileStatus != tileStatuses.revealed) canvas[r][c].tileStatus = tileStatuses.hidden;
+                //         }
+                //     }
+                //     floodFill(currentTile.x,currentTile.y)
+                //     animationPaused = false;
+                // }
             }) 
             tile.element.addEventListener("contextmenu", e => {
                 e.preventDefault();
-
+                
+                startingTile = tile; 
                 floodFill(tile.x,tile.y);
+                setInterval(animateFloodFill,100,visitedTilesInOrder)
+                // radiateOut(tile.x,tile.y)
             })
 
             row.push(tile);
